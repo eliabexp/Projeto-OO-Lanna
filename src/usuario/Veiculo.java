@@ -1,6 +1,4 @@
-package Classes;
-
-import Enums.TipoVeiculo;
+package usuario;
 
 import java.util.Scanner;
 
@@ -19,7 +17,7 @@ public class Veiculo {
         this.tipoVeiculo = tipoVeiculo;
     }
 
-    private TipoVeiculo mapTipoVeiculo(int escolha) {
+    protected static TipoVeiculo mapTipoVeiculo(int escolha) {
         return switch (escolha) {
             case 1 -> TipoVeiculo.LUXO;
             case 2 -> TipoVeiculo.COMFORT;
@@ -48,5 +46,11 @@ public class Veiculo {
 
     public TipoVeiculo getTipoVeiculo() {
         return tipoVeiculo;
+    }
+
+    public void imprimirInformacoes(){
+        System.out.println("Modelo do carro: " + this.modelo + " " + this.ano);
+        System.out.println("Cor: " + this.cor);
+        System.out.println("Placa: " + this.placa);
     }
 }
