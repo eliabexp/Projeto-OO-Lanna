@@ -1,4 +1,4 @@
-package Enums;
+package usuario;
 
 public enum TipoVeiculo {
     LUXO(9, 2.2F),

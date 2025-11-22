@@ -1,7 +1,10 @@
-package Classes;
+package usuario;
+
+import pagamento.FormasDePagamento;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 public abstract class Usuario {
     private String nome;
@@ -10,6 +13,7 @@ public abstract class Usuario {
     private String cpf;
     private String numeroDeTelefone;
     private String senhaHash;
+    private ArrayList<FormasDePagamento> formasdepagamento = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
 
     protected Usuario(String nome, String email, String cpf, String numeroDeTelefone, String senha) {
@@ -26,8 +30,8 @@ public abstract class Usuario {
 
     protected float getNota() {
         float soma = 0;
-        for (int i = 0; i < avaliacoes.size(); i++) {
-            soma += avaliacoes.get(i);
+        for (Integer avaliacoes : avaliacoes) {
+            soma += avaliacoes;
         }
 
         return soma /= avaliacoes.size();

@@ -1,10 +1,12 @@
-package Classes;
+package usuario;
 
-import Enums.TipoDoCarro;
+import corrida.Corrida;
+import corrida.Rota;
 
 import java.util.Scanner;
 
 public class Motorista extends Usuario {
+    private StatusMotorista status;
     private Habilitacao habilitacao;
     private Veiculo veiculo;
 
@@ -33,17 +35,41 @@ public class Motorista extends Usuario {
         return new Motorista(nome, email, cpf, numeroDeTelefone, senhaHash, habilitacao, veiculo);
     }
 
+    public StatusMotorista getStatus() {
+        return status;
+    }
+
+    protected void setStatus(StatusMotorista status) {
+        this.status = status;
+    }
+
     protected Habilitacao getHabilitacao() {
         return habilitacao;
     }
+
     protected void setHabilitacao(Habilitacao habilitacao) {
         this.habilitacao = habilitacao;
     }
 
-    protected Veiculo getVeiculo() {
+    public Veiculo getVeiculo() {
         return veiculo;
     }
+
     protected void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
+    }
+
+    public boolean solicitarCorrida(Corrida corrida) {
+        Rota rota = corrida.getRota();
+        System.out.println(corrida.getPassageiro().getNome() + " solicitou uma viagem de " + rota.getPartida().getNome() + " para " + rota.getDestino().getNome());
+        System.out.printf("\nValor da corrida: R$ .%2f%n", corrida.getPreco());
+
+        System.out.println("Deseja aceitar a corrida? (s|n)");
+        String resposta = sc.nextLine();
+
+        if (!resposta.equalsIgnoreCase("s")) return false;
+
+        this.status = StatusMotorista.EM_CORRIDA;
+        return true;
     }
 }
