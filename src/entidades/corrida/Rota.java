@@ -1,4 +1,4 @@
-package corrida;
+package entidades.corrida;
 
 public class Rota {
     private Local partida;

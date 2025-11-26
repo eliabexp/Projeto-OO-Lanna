@@ -1,6 +1,6 @@
-package usuario;
+package entidades.usuario;
 
-import pagamento.FormasDePagamento;
+import entidades.pagamento.FormasDePagamento;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,21 +14,24 @@ public abstract class Usuario {
     private String numeroDeTelefone;
     private String senhaHash;
     private ArrayList<FormasDePagamento> formasdepagamento = new ArrayList<>();
-    Scanner sc = new Scanner(System.in);
+
+    private String hashSenha(String senha) {
+        return senha + "1234Token@";
+    }
 
     protected Usuario(String nome, String email, String cpf, String numeroDeTelefone, String senha) {
         this.nome = nome;
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
         this.cpf = cpf;
-        this.senhaHash = senha + "1234Token@";
+        this.senhaHash = hashSenha(senha);
     }
 
-    protected void avaliar(int nota) {
+    public void avaliar(int nota) {
         avaliacoes.add(nota);
     }
 
-    protected float getNota() {
+    public float getNota() {
         float soma = 0;
         for (Integer avaliacoes : avaliacoes) {
             soma += avaliacoes;
@@ -37,7 +40,7 @@ public abstract class Usuario {
         return soma /= avaliacoes.size();
     }
 
-    protected String getNome() {
+    public String getNome() {
         return nome;
     }
 }

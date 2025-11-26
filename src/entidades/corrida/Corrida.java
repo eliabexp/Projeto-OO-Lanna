@@ -1,6 +1,11 @@
-package corrida;
+package entidades.corrida;
 
-import usuario.*;
+import entidades.usuario.Motorista;
+import entidades.usuario.Passageiro;
+import entidades.usuario.StatusMotorista;
+import entidades.usuario.TipoVeiculo;
+import exceptions.EstadoInvalidoDaCorridaException;
+import exceptions.NenhumMotoristaDisponivelException;
 
 import java.util.ArrayList;
 
@@ -40,9 +45,17 @@ public class Corrida {
         return passageiro;
     }
 
+    public StatusCorrida getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCorrida status) {
+        this.status = status;
+    }
+
     public void buscarMotorista(ArrayList<Motorista> cadastrados) {
         for (Motorista motorista : cadastrados) {
-            // Verifica se a corrida ainda está ativa
+            // Verifica se a entidades.corrida ainda está ativa
             if (status != StatusCorrida.SOLICITADA) return;
 
             // Filtragem de motoristas
@@ -63,13 +76,20 @@ public class Corrida {
     public void cancelar() {
         switch (status) {
             case StatusCorrida.EM_ANDAMENTO:
-                throw new EstadoInvalidoDaCorridaException("Esta corrida não pode ser cancelada pois já está em andamento.");
+                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida não pode ser cancelada pois já está em andamento.");
             case StatusCorrida.FINALIZADA:
-                throw new EstadoInvalidoDaCorridaException("Esta corrida já foi finalizada.");
+                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida já foi finalizada.");
             case StatusCorrida.CANCELADA:
-                throw new EstadoInvalidoDaCorridaException("Esta corrida já foi cancelada");
+                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida já foi cancelada");
         }
 
-        this.status = StatusCorrida.FINALIZADA;
+        setStatus(StatusCorrida.FINALIZADA);
+    }
+
+    public void finalizar() {
+        setStatus(StatusCorrida.FINALIZADA);
+
+        motorista.setStatus(StatusMotorista.ONLINE);
+
     }
 }

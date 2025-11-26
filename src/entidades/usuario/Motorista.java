@@ -1,7 +1,7 @@
-package usuario;
+package entidades.usuario;
 
-import corrida.Corrida;
-import corrida.Rota;
+import entidades.corrida.Corrida;
+import entidades.corrida.Rota;
 
 import java.util.Scanner;
 
@@ -29,7 +29,10 @@ public class Motorista extends Usuario {
         System.out.println("Senha:");
         String senhaHash = sc.nextLine();
 
+        System.out.println("Agora, as informações de habilitação");
         Habilitacao habilitacao = Habilitacao.cadastrarHabilitacao(sc);
+
+        System.out.println("Agora, insira os dados do seu veículo");
         Veiculo veiculo = Veiculo.cadastrarVeiculo(sc);
 
         return new Motorista(nome, email, cpf, numeroDeTelefone, senhaHash, habilitacao, veiculo);
@@ -39,7 +42,7 @@ public class Motorista extends Usuario {
         return status;
     }
 
-    protected void setStatus(StatusMotorista status) {
+    public void setStatus(StatusMotorista status) {
         this.status = status;
     }
 
@@ -59,12 +62,12 @@ public class Motorista extends Usuario {
         this.veiculo = veiculo;
     }
 
-    public boolean solicitarCorrida(Corrida corrida) {
+    public boolean solicitarCorrida(Scanner sc, Corrida corrida) {
         Rota rota = corrida.getRota();
         System.out.println(corrida.getPassageiro().getNome() + " solicitou uma viagem de " + rota.getPartida().getNome() + " para " + rota.getDestino().getNome());
-        System.out.printf("\nValor da corrida: R$ .%2f%n", corrida.getPreco());
+        System.out.printf("\nValor da entidades.corrida: R$ .%2f%n", corrida.getPreco());
 
-        System.out.println("Deseja aceitar a corrida? (s|n)");
+        System.out.println("Deseja aceitar a entidades.corrida? (s|n)");
         String resposta = sc.nextLine();
 
         if (!resposta.equalsIgnoreCase("s")) return false;
@@ -72,4 +75,5 @@ public class Motorista extends Usuario {
         this.status = StatusMotorista.EM_CORRIDA;
         return true;
     }
+
 }

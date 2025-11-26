@@ -1,4 +1,4 @@
-package usuario;
+package entidades.usuario;
 
 public enum StatusMotorista {
     OFFLINE,

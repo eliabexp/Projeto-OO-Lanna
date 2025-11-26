@@ -1,4 +1,6 @@
-package usuario;
+package entidades.usuario;
+
+import exceptions.HabilitacaoVencidaException;
 
 import java.util.Scanner;
 
@@ -6,8 +8,8 @@ public class Habilitacao {
     private String numeroDeRegistro;
     private int anoValidade;
 
-    protected Habilitacao(String numeroDeRegistro, int anoValidade) {
-        if (anoValidade < 2025) throw new IllegalArgumentException("Habilitação vencida");
+    public Habilitacao(String numeroDeRegistro, int anoValidade) {
+        if (anoValidade < 2025) throw new HabilitacaoVencidaException("Habilitação vencida.");
 
         this.numeroDeRegistro = numeroDeRegistro;
         this.anoValidade = anoValidade;
@@ -19,6 +21,7 @@ public class Habilitacao {
 
         System.out.println("Ano de validade:");
         int anoValidade = sc.nextInt();
+        sc.nextLine();
 
         return new Habilitacao(numeroDeRegistro, anoValidade);
     }

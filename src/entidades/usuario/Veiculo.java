@@ -1,4 +1,4 @@
-package usuario;
+package entidades.usuario;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class Veiculo {
     private int ano;
     private TipoVeiculo tipoVeiculo;
 
-    protected Veiculo(String placa, String modelo, String cor, int ano, TipoVeiculo tipoVeiculo) {
+    public Veiculo(String placa, String modelo, String cor, int ano, TipoVeiculo tipoVeiculo) {
         this.placa = placa;
         this.modelo = modelo;
         this.cor = cor;
@@ -31,26 +31,25 @@ public class Veiculo {
         System.out.println("---Cadastro de veículo---");
         System.out.println("Placa:");
         String placa = sc.nextLine();
+
         System.out.println("Modelo:");
         String modelo = sc.nextLine();
+
         System.out.println("Ano:");
         int ano = sc.nextInt();
+        sc.nextLine();
 
         System.out.println("Cor:");
         String cor = sc.nextLine();
+
         System.out.println("Digite o número de acordo com o tipo do veículo:\n1: Luxo\n2: Comfort\n3: Comum\n4: Moto");
         TipoVeiculo tipoVeiculo = mapTipoVeiculo(sc.nextInt());
+        sc.nextLine();
 
         return new Veiculo(placa, modelo, cor, ano, tipoVeiculo);
     }
 
     public TipoVeiculo getTipoVeiculo() {
         return tipoVeiculo;
-    }
-
-    public void imprimirInformacoes(){
-        System.out.println("Modelo do carro: " + this.modelo + " " + this.ano);
-        System.out.println("Cor: " + this.cor);
-        System.out.println("Placa: " + this.placa);
     }
 }
