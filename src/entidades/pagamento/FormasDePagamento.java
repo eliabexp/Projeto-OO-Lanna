@@ -1,8 +1,11 @@
-package pagamento;
+package entidades.pagamento;
 
-import usuario.Passageiro;
+import exceptions.SaldoInsuficienteException;
+import entidades.usuario.Passageiro;
 
 public abstract class FormasDePagamento {
+    private float saldo;
+
     public void processarPagamento(float valorCorrida, Passageiro passageiro) {
         float saldoAtual = passageiro.getSaldo();
         if (saldoAtual < valorCorrida) {

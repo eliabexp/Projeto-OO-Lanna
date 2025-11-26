@@ -1,4 +1,4 @@
-package corrida;
+package entidades.corrida;
 
 import java.util.Scanner;
 
