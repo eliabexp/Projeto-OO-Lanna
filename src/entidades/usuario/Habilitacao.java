@@ -2,7 +2,7 @@ package entidades.usuario;
 
 import exceptions.HabilitacaoVencidaException;
 
-import java.util.Scanner;
+import static main.Main.sc;
 
 public class Habilitacao {
     private String numeroDeRegistro;
@@ -15,7 +15,7 @@ public class Habilitacao {
         this.anoValidade = anoValidade;
     }
 
-    protected static Habilitacao cadastrarHabilitacao(Scanner sc) {
+    protected static Habilitacao cadastrarHabilitacao() {
         System.out.println("Número de registro:");
         String numeroDeRegistro = sc.nextLine();
 

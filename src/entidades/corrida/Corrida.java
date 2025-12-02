@@ -20,7 +20,9 @@ public class Corrida {
     public Corrida(Rota rota, Passageiro passageiro, TipoVeiculo categoria) {
         this.rota = rota;
         this.passageiro = passageiro;
+        this.status = StatusCorrida.SOLICITADA;
         this.preco = calcularPreco(rota, categoria);
+        this.categoria = categoria;
     }
 
     protected static float calcularPreco(Rota rota, TipoVeiculo categoria) {
@@ -55,7 +57,7 @@ public class Corrida {
 
     public void buscarMotorista(ArrayList<Motorista> cadastrados) {
         for (Motorista motorista : cadastrados) {
-            // Verifica se a entidades.corrida ainda está ativa
+            // Verifica se a corrida ainda está ativa
             if (status != StatusCorrida.SOLICITADA) return;
 
             // Filtragem de motoristas
@@ -63,25 +65,39 @@ public class Corrida {
                 continue;
             }
 
-            if (motorista.solicitarCorrida(this)) {
+            // Envia uma solicitação para o motorista aceitar a corrida
+            if (motorista.receberCorrida(this)) {
                 this.motorista = motorista;
+                this.iniciar();
                 break;
             }
         }
 
-        if (motorista == null)
+        if (this.motorista == null)
             throw new NenhumMotoristaDisponivelException("Não há motoristas disponíveis por perto, tente novamente mais tarde.");
     }
 
-    public void cancelar() {
-        switch (status) {
-            case StatusCorrida.EM_ANDAMENTO:
-                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida não pode ser cancelada pois já está em andamento.");
-            case StatusCorrida.FINALIZADA:
-                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida já foi finalizada.");
-            case StatusCorrida.CANCELADA:
-                throw new EstadoInvalidoDaCorridaException("Esta entidades.corrida já foi cancelada");
+    public void iniciar() {
+        if (status != StatusCorrida.SOLICITADA)
+            throw new EstadoInvalidoDaCorridaException("Esta corrida já foi iniciada.");
+
+        this.status = StatusCorrida.EM_ANDAMENTO;
+        motorista.setStatus(StatusMotorista.EM_CORRIDA);
+
+        System.out.println("A viagem foi iniciada...");
+
+        try {
+            TimeUnit.SECONDS.sleep((long) rota.calcularDistancia());
+        } catch (InterruptedException e) {
+            System.out.println("Erro ao atualizar localização");
         }
+
+        finalizar();
+    }
+
+    public void cancelar() {
+        if (status != StatusCorrida.SOLICITADA)
+            throw new EstadoInvalidoDaCorridaException("Esta corrida não pode ser cancelada.");
 
         setStatus(StatusCorrida.FINALIZADA);
     }
@@ -90,6 +106,21 @@ public class Corrida {
         setStatus(StatusCorrida.FINALIZADA);
 
         motorista.setStatus(StatusMotorista.ONLINE);
+
+        System.out.println("Você chegou ao seu destino, por favor avalie o motorista " + motorista.getNome() + "(1-5)");
+        int notaMotorista = sc.nextInt();
+        sc.nextLine();
+        motorista.avaliar(notaMotorista);
+
+        System.out.println();
+
+        System.out.println("Escolha um método de pagamento: ");
+        passageiro.ListaMetodosDePagamento();
+        int escolha = sc.nextInt();
+        escolha--;
+        sc.nextLine();
+        passageiro.getFormasDePagamento().get(escolha).processarPagamento(preco, passageiro);
+        System.out.println("Pagamento concluído com sucesso, obrigado pela preferência!");
 
     }
 }

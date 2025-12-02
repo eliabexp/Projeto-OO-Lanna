@@ -1,5 +1,5 @@
 package entidades.pagamento;
 
-public abstract class Cartao extends FormasDePagamento {
+public abstract class Cartao extends FormaDePagamento {
     private String codigo;
 }

@@ -3,7 +3,7 @@ package entidades.pagamento;
 import exceptions.SaldoInsuficienteException;
 import entidades.usuario.Passageiro;
 
-public abstract class FormasDePagamento {
+public abstract class FormaDePagamento {
     private float saldo;
 
     public void processarPagamento(float valorCorrida, Passageiro passageiro) {
