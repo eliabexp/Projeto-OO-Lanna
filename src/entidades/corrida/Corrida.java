@@ -8,6 +8,9 @@ import exceptions.EstadoInvalidoDaCorridaException;
 import exceptions.NenhumMotoristaDisponivelException;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import static main.Main.sc;
 
 public class Corrida {
     private Rota rota;
@@ -102,7 +105,12 @@ public class Corrida {
         setStatus(StatusCorrida.FINALIZADA);
     }
 
-    public void finalizar() {
+    private void finalizar() {
+        System.out.println("Você chegou ao destino de " + passageiro.getNome() + "\nAvaliação do Passageiro (1-5):");
+        int notaPassageiro = sc.nextInt();
+        sc.nextLine();
+        passageiro.avaliar(notaPassageiro);
+        System.out.println("Corrida finalizada, obrigado pelos seus serviços " + motorista.getNome());
         setStatus(StatusCorrida.FINALIZADA);
 
         motorista.setStatus(StatusMotorista.ONLINE);
