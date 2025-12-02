@@ -4,7 +4,6 @@ import entidades.pagamento.FormaDePagamento;
 
 import java.util.ArrayList;
 
-
 public abstract class Usuario {
     private String nome;
     private String email;
@@ -12,7 +11,7 @@ public abstract class Usuario {
     private String cpf;
     private String numeroDeTelefone;
     private String senhaHash;
-    private ArrayList<FormaDePagamento> formasdepagamento = new ArrayList<>();
+
 
     private String hashSenha(String senha) {
         return senha + "1234Token@";
@@ -25,9 +24,6 @@ public abstract class Usuario {
         this.cpf = cpf;
         this.senhaHash = hashSenha(senha);
         this.avaliacoes = new ArrayList<>();
-
-        // Média inicial será a máxima
-        avaliacoes.add(5);
     }
 
     public void avaliar(int nota) {
@@ -35,12 +31,12 @@ public abstract class Usuario {
     }
 
     public float getNota() {
-        float soma = 0;
+        float soma = 5; // Média inicial será 5
         for (Integer avaliacoes : avaliacoes) {
             soma += avaliacoes;
         }
 
-        return soma /= avaliacoes.size();
+        return soma /= avaliacoes.size() + 1;
     }
 
     public String getEmail() {

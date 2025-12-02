@@ -1,17 +1,26 @@
 package entidades.pagamento;
 
-import exceptions.SaldoInsuficienteException;
-import entidades.usuario.Passageiro;
+import exceptions.PagamentoRecusadoException;
 
 public abstract class FormaDePagamento {
+    private String nome;
     private float saldo;
 
-    public void processarPagamento(float valorCorrida, Passageiro passageiro) {
-        float saldoAtual = passageiro.getSaldo();
-        if (saldoAtual < valorCorrida) {
-            throw new SaldoInsuficienteException("Saldo insuficiente");
+    protected FormaDePagamento(String nome, float saldo) {
+        this.nome = nome;
+        this.saldo = saldo;
+    }
+
+    public void processarPagamento(float valorCorrida) {
+        if (saldo < valorCorrida) {
+            throw new PagamentoRecusadoException("Saldo insuficiente");
         }
 
-        passageiro.setSaldo(saldoAtual - valorCorrida);
+        saldo -= valorCorrida;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
 }
