@@ -1,14 +1,44 @@
 package main;
 
+import entidades.pagamento.CartaoCredito;
+import entidades.pagamento.CartaoDebito;
+import entidades.pagamento.PIX;
 import entidades.usuario.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-// main.Main
 public class Main {
     public static Scanner sc = new Scanner(System.in);
+
+    public static void menuPassageiro(Passageiro passageiro, ArrayList<Motorista> motoristas) {
+        boolean menuAtivo = true;
+
+        while (menuAtivo) {
+            System.out.println();
+            System.out.println("Selecione uma opção:");
+            System.out.println("1 → Solicitar uma viagem");
+            System.out.println("2 → Cadastrar método de pagamento");
+            System.out.println("0 → Desconectar");
+
+            int escolha = sc.nextInt();
+            sc.nextLine();
+
+            switch (escolha) {
+                case 1:
+                    passageiro.solicitarCorrida(motoristas);
+                    break;
+                case 2:
+                    passageiro.cadastrarMetodoDePagamento();
+                    break;
+                case 0:
+                    menuAtivo = false;
+                    break;
+            }
+        }
+    }
 
     public static void main(String[] args) {
         // Motoristas pré cadastrados
@@ -60,9 +90,10 @@ public class Main {
                 new Passageiro(
                         "André Lanna",
                         "andrelanna@gmail.com",
-                        "024.982.660-70",
+                        "024.981.661-70",
                         "(61) 99110-0200",
-                        "SenhaMestre"
+                        "SenhaMestre",
+                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 1, "1234"), new CartaoCredito("Black", 5000, "1234")))
                 )
         );
         passageiros.add(
@@ -71,7 +102,8 @@ public class Main {
                         "eliabealves@gmail.com",
                         "024.982.660-70",
                         "(61) 99110-0200",
-                        "SenhaMestre"
+                        "SenhaMestre",
+                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 250, "1234"), new CartaoCredito("Black", 5000, "1234"), new PIX("Banco", 1000)))
                 )
         );
         passageiros.add(
@@ -80,7 +112,8 @@ public class Main {
                         "gabrielcardone@gmail.com",
                         "024.982.660-70",
                         "(61) 99110-0200",
-                        "SenhaMestre"
+                        "SenhaMestre",
+                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 250, "1234"), new CartaoCredito("Black", 2.5f, "1234"), new PIX("Banco", 1000)))
                 )
         );
         passageiros.add(
@@ -89,27 +122,26 @@ public class Main {
                         "igordagraudemoto@gmail.com",
                         "024.982.660-70",
                         "(61) 99110-0200",
-                        "SenhaMestre"
+                        "SenhaMestre",
+                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 250, "1234"), new CartaoCredito("Black", 5000, "1234"), new PIX("Banco", 0)))
                 )
         );
 
-        System.out.println("===Chenride===");
-        System.out.println("Seja bem vindo ao Chenride!");
-        System.out.println("Nós somos um aplicativo de corridas que prioriza a simplicidade e a sua agilidade, pois sabemos o valor do seu tempo. :)");
+        System.out.println("RoadLines - Menu principal");
+        System.out.println("Seja bem vindo ao RoadLines!");
+        System.out.println("Nós somos um aplicativo de corridas que prioriza a simplicidade\ne a sua agilidade, pois sabemos o valor do seu tempo. :)");
 
         boolean menuAtivo = true;
         while (menuAtivo) {
-            System.out.println("***Digite 0 para sair do aplicativo       ***");
-            System.out.println("***Digite 1 para login                    ***");
-            System.out.println("***Digite 2 para cadastro de motorista    ***");
-            System.out.println("***Digite 3 para cadastro de passageiro   ***");
+            System.out.println("1 → Login");
+            System.out.println("2 → Cadastro de motorista");
+            System.out.println("3 → Cadastro de passageiro");
+            System.out.println("0 → Sair");
 
             int escolha = sc.nextInt();
             sc.nextLine();
 
             switch (escolha) {
-                case 0:
-                    break;
                 case 1: {
                     System.out.println("Digite seu e-mail:");
                     String email = sc.nextLine();
@@ -118,29 +150,42 @@ public class Main {
 
                     Passageiro passageiro = null;
                     for (Passageiro item : passageiros) {
-                        if (Objects.equals(item.getEmail(), email) && item.validateSenha(senha)) passageiro = item;
+                        if (Objects.equals(item.getEmail(), email) && item.validateSenha(senha))
+                            passageiro = item;
                     }
 
                     if (passageiro == null) {
-                        System.out.println("Usuário não encontrado!");
+                        System.out.println("Você digitou usuário ou senha inválidos, tente novamente.");
                         break;
                     }
 
-                    InterfacePassageiro.acessarPassageiro(passageiro, motoristas);
+                    menuPassageiro(passageiro, motoristas);
                     break;
                 }
                 case 2: {
-                    Motorista motoristaCadastrando = Motorista.cadastrar();
-                    motoristas.add(motoristaCadastrando);
-                    System.out.println(motoristaCadastrando.getNome() + " cadastrado com sucesso!");
+                    try {
+                        Motorista motoristaCadastrando = new Motorista();
+                        motoristas.add(motoristaCadastrando);
+                        System.out.println(motoristaCadastrando.getNome() + " cadastrado com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println("Não foi possível cadastrar este motorista: " + e.getMessage());
+                    }
                     break;
                 }
                 case 3: {
-                    Passageiro passageiroCadastrando = Passageiro.cadastrar();
-                    passageiros.add(passageiroCadastrando);
-                    System.out.println(passageiroCadastrando.getNome() + " cadastrado com sucesso!");
+                    try {
+                        Passageiro passageiroCadastrando = new Passageiro();
+                        passageiros.add(passageiroCadastrando);
+                        System.out.println(passageiroCadastrando.getNome() + " cadastrado com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println("Não foi possível cadastrar este passageiro: " + e.getMessage());
+                    }
                     break;
                 }
+                case 0:
+                    System.out.println("Volte sempre!");
+                    menuAtivo = false;
+                    break;
                 default: {
                     System.out.println("Opção inválida.");
                 }

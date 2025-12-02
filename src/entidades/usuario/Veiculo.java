@@ -9,25 +9,7 @@ public class Veiculo {
     private int ano;
     private TipoVeiculo tipoVeiculo;
 
-    public Veiculo(String placa, String modelo, String cor, int ano, TipoVeiculo tipoVeiculo) {
-        this.placa = placa;
-        this.modelo = modelo;
-        this.cor = cor;
-        this.ano = ano;
-        this.tipoVeiculo = tipoVeiculo;
-    }
-
-    protected static TipoVeiculo mapTipoVeiculo(int escolha) {
-        return switch (escolha) {
-            case 1 -> TipoVeiculo.LUXO;
-            case 2 -> TipoVeiculo.COMFORT;
-            case 3 -> TipoVeiculo.COMUM;
-            case 4 -> TipoVeiculo.MOTO;
-            default -> null;
-        };
-    }
-
-    protected static Veiculo cadastrarVeiculo() {
+    public Veiculo() {
         System.out.println("---Cadastro de veículo---");
         System.out.println("Placa:");
         String placa = sc.nextLine();
@@ -46,7 +28,25 @@ public class Veiculo {
         TipoVeiculo tipoVeiculo = mapTipoVeiculo(sc.nextInt());
         sc.nextLine();
 
-        return new Veiculo(placa, modelo, cor, ano, tipoVeiculo);
+        this(placa, modelo, cor, ano, tipoVeiculo);
+    }
+
+    public Veiculo(String placa, String modelo, String cor, int ano, TipoVeiculo tipoVeiculo) {
+        this.placa = placa;
+        this.modelo = modelo;
+        this.cor = cor;
+        this.ano = ano;
+        this.tipoVeiculo = tipoVeiculo;
+    }
+
+    public static TipoVeiculo mapTipoVeiculo(int escolha) {
+        return switch (escolha) {
+            case 1 -> TipoVeiculo.LUXO;
+            case 2 -> TipoVeiculo.COMFORT;
+            case 3 -> TipoVeiculo.COMUM;
+            case 4 -> TipoVeiculo.MOTO;
+            default -> null;
+        };
     }
 
     public TipoVeiculo getTipoVeiculo() {

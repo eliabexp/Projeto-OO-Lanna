@@ -10,15 +10,8 @@ public class Motorista extends Usuario {
     private Habilitacao habilitacao;
     private Veiculo veiculo;
 
-    public Motorista(String nome, String email, String cpf, String numeroDeTelefone, String senha, Habilitacao habilitacao, Veiculo veiculo) {
-        super(nome, email, cpf, numeroDeTelefone, senha);
-        this.habilitacao = habilitacao;
-        this.veiculo = veiculo;
-        this.status = StatusMotorista.ONLINE;
-    }
-
-    public static Motorista cadastrar() {
-        System.out.println("---Cadastro---");
+    public Motorista() {
+        System.out.println("---Trabalhe com a RoadLines---");
         System.out.println("Nome:");
         String nome = sc.nextLine();
         System.out.println("Email:");
@@ -31,12 +24,19 @@ public class Motorista extends Usuario {
         String senhaHash = sc.nextLine();
 
         System.out.println("Agora, as informações de habilitação");
-        Habilitacao habilitacao = Habilitacao.cadastrarHabilitacao();
+        Habilitacao habilitacao = new Habilitacao();
 
         System.out.println("Agora, insira os dados do seu veículo");
-        Veiculo veiculo = Veiculo.cadastrarVeiculo();
+        Veiculo veiculo = new Veiculo();
 
-        return new Motorista(nome, email, cpf, numeroDeTelefone, senhaHash, habilitacao, veiculo);
+        this(nome, email, cpf, numeroDeTelefone, senhaHash, habilitacao, veiculo);
+    }
+
+    public Motorista(String nome, String email, String cpf, String numeroDeTelefone, String senha, Habilitacao habilitacao, Veiculo veiculo) {
+        super(nome, email, cpf, numeroDeTelefone, senha);
+        this.habilitacao = habilitacao;
+        this.veiculo = veiculo;
+        this.status = StatusMotorista.ONLINE;
     }
 
     public StatusMotorista getStatus() {
@@ -47,20 +47,8 @@ public class Motorista extends Usuario {
         this.status = status;
     }
 
-    protected Habilitacao getHabilitacao() {
-        return habilitacao;
-    }
-
-    protected void setHabilitacao(Habilitacao habilitacao) {
-        this.habilitacao = habilitacao;
-    }
-
     public Veiculo getVeiculo() {
         return veiculo;
-    }
-
-    protected void setVeiculo(Veiculo veiculo) {
-        this.veiculo = veiculo;
     }
 
     public boolean receberCorrida(Corrida corrida) {
@@ -74,5 +62,4 @@ public class Motorista extends Usuario {
 
         return resposta.equalsIgnoreCase("s");
     }
-
 }
