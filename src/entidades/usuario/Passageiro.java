@@ -72,4 +72,20 @@ public class Passageiro extends Usuario {
 
         return new Passageiro(nome, email, cpf, numeroDeTelefone, senhaHash);
     }
+
+    public void ListaMetodosDePagamento() {
+        for (int i = 0; i < formasDePagamento.size(); i++) {
+            if (formasDePagamento.get(i) instanceof CartaoCredito) {
+                System.out.println("Forma de pagamento " + (i + 1) + ":Cartão de crédito de código: " + ((CartaoCredito) formasDePagamento.get(i)).getCodigo());
+            } else if (formasDePagamento.get(i) instanceof CartaoDebito) {
+                System.out.println("Forma de pagamento " + (i + 1) + ":Cartão de débito de código: " + ((CartaoDebito) formasDePagamento.get(i)).getCodigo());
+            } else if (formasDePagamento.get(i) instanceof PIX) {
+                System.out.println("Forma de pagamento " + (i + 1) + ":PIX");
+            }
+        }
+    }
+
+    public ArrayList<FormaDePagamento> getFormasDePagamento() {
+        return formasDePagamento;
+    }
 }
