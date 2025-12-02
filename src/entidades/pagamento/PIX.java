@@ -1,4 +1,4 @@
 package entidades.pagamento;
 
-public class PIX extends FormasDePagamento {}
+public class PIX extends FormaDePagamento {}
 

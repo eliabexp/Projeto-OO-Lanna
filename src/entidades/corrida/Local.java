@@ -1,6 +1,6 @@
 package entidades.corrida;
 
-import java.util.Scanner;
+import static main.Main.sc;
 
 public class Local {
     private String nome;
@@ -13,14 +13,16 @@ public class Local {
         this.longitude = longitude;
     }
 
-    public static Local inserirLocal(Scanner sc) {
+    public static Local inserirLocal() {
         System.out.println("---Inserir local---");
         System.out.println("Digite o nome do local:");
         String nome = sc.nextLine();
         System.out.println("Latitude:");
         double latitude = sc.nextDouble();
+        sc.nextLine();
         System.out.println("Longitude:");
         double longitude = sc.nextDouble();
+        sc.nextLine();
 
         return new Local(nome, latitude, longitude);
     }

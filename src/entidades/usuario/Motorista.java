@@ -3,7 +3,7 @@ package entidades.usuario;
 import entidades.corrida.Corrida;
 import entidades.corrida.Rota;
 
-import java.util.Scanner;
+import static main.Main.sc;
 
 public class Motorista extends Usuario {
     private StatusMotorista status;
@@ -14,9 +14,10 @@ public class Motorista extends Usuario {
         super(nome, email, cpf, numeroDeTelefone, senha);
         this.habilitacao = habilitacao;
         this.veiculo = veiculo;
+        this.status = StatusMotorista.ONLINE;
     }
 
-    public static Motorista cadastrarMotorista(Scanner sc) {
+    public static Motorista cadastrar() {
         System.out.println("---Cadastro---");
         System.out.println("Nome:");
         String nome = sc.nextLine();
@@ -30,10 +31,10 @@ public class Motorista extends Usuario {
         String senhaHash = sc.nextLine();
 
         System.out.println("Agora, as informações de habilitação");
-        Habilitacao habilitacao = Habilitacao.cadastrarHabilitacao(sc);
+        Habilitacao habilitacao = Habilitacao.cadastrarHabilitacao();
 
         System.out.println("Agora, insira os dados do seu veículo");
-        Veiculo veiculo = Veiculo.cadastrarVeiculo(sc);
+        Veiculo veiculo = Veiculo.cadastrarVeiculo();
 
         return new Motorista(nome, email, cpf, numeroDeTelefone, senhaHash, habilitacao, veiculo);
     }
@@ -62,18 +63,16 @@ public class Motorista extends Usuario {
         this.veiculo = veiculo;
     }
 
-    public boolean solicitarCorrida(Scanner sc, Corrida corrida) {
+    public boolean receberCorrida(Corrida corrida) {
         Rota rota = corrida.getRota();
-        System.out.println(corrida.getPassageiro().getNome() + " solicitou uma viagem de " + rota.getPartida().getNome() + " para " + rota.getDestino().getNome());
-        System.out.printf("\nValor da entidades.corrida: R$ .%2f%n", corrida.getPreco());
+        Passageiro passageiro = corrida.getPassageiro();
+        System.out.printf("%s (%.2f★) solicitou uma viagem de %s para %s (%.2f km)\n", passageiro.getNome(), passageiro.getNota(), rota.getPartida().getNome(), rota.getDestino().getNome(), rota.calcularDistancia());
+        System.out.printf("Valor da corrida: R$ %.2f\n", corrida.getPreco());
 
-        System.out.println("Deseja aceitar a entidades.corrida? (s|n)");
+        System.out.println("Deseja aceitar a corrida? (s|n)");
         String resposta = sc.nextLine();
 
-        if (!resposta.equalsIgnoreCase("s")) return false;
-
-        this.status = StatusMotorista.EM_CORRIDA;
-        return true;
+        return resposta.equalsIgnoreCase("s");
     }
 
 }

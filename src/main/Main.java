@@ -1,12 +1,16 @@
+package main;
+
 import entidades.usuario.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
-// Chen
+// main.Main
 public class Main {
+    public static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         // Motoristas pré cadastrados
         ArrayList<Motorista> motoristas = new ArrayList<>();
         motoristas.add(
@@ -17,7 +21,7 @@ public class Main {
                         "(61) 99110-0100",
                         "12345678",
                         new Habilitacao("123", 2025),
-                        new Veiculo("JPG0101", "BYD", "Branco", 2024, TipoVeiculo.LUXO))
+                        new Veiculo("JPG0101", "BYD", "Preto", 2025, TipoVeiculo.LUXO))
         );
         motoristas.add(
                 new Motorista(
@@ -27,7 +31,17 @@ public class Main {
                         "(61) 99110-0200",
                         "senhadificil",
                         new Habilitacao("124", 2031),
-                        new Veiculo("MOV0101", "Gol", "Branco", 2024, TipoVeiculo.COMUM))
+                        new Veiculo("MOV0101", "Gol", "Branco", 2024, TipoVeiculo.COMFORT))
+        );
+        motoristas.add(
+                new Motorista(
+                        "Cardial",
+                        "cardial@gmail.com",
+                        "181.440.120-30",
+                        "(61) 99110-0200",
+                        "senhadificil",
+                        new Habilitacao("124", 2031),
+                        new Veiculo("MP40101", "Gol", "Rosa", 2020, TipoVeiculo.COMUM))
         );
         motoristas.add(
                 new Motorista(
@@ -37,7 +51,7 @@ public class Main {
                         "(61) 98830-9379",
                         "12345678",
                         new Habilitacao("123", 2025),
-                        new Veiculo("JPG0101", "Gol", "Branco", 2024, TipoVeiculo.COMUM))
+                        new Veiculo("JPG0101", "Honda Bis", "Rosa", 2024, TipoVeiculo.MOTO))
         );
 
         // Passageiros pré-cadastrados
@@ -79,11 +93,12 @@ public class Main {
                 )
         );
 
-
         System.out.println("===Chenride===");
         System.out.println("Seja bem vindo ao Chenride!");
         System.out.println("Nós somos um aplicativo de corridas que prioriza a simplicidade e a sua agilidade, pois sabemos o valor do seu tempo. :)");
-        while (true) {
+
+        boolean menuAtivo = true;
+        while (menuAtivo) {
             System.out.println("***Digite 0 para sair do aplicativo       ***");
             System.out.println("***Digite 1 para login                    ***");
             System.out.println("***Digite 2 para cadastro de motorista    ***");
@@ -96,16 +111,32 @@ public class Main {
                 case 0:
                     break;
                 case 1: {
+                    System.out.println("Digite seu e-mail:");
+                    String email = sc.nextLine();
+                    System.out.println("Digite sua senha:");
+                    String senha = sc.nextLine();
+
+                    Passageiro passageiro = null;
+                    for (Passageiro item : passageiros) {
+                        if (Objects.equals(item.getEmail(), email) && item.validateSenha(senha)) passageiro = item;
+                    }
+
+                    if (passageiro == null) {
+                        System.out.println("Usuário não encontrado!");
+                        break;
+                    }
+
+                    InterfacePassageiro.acessarPassageiro(passageiro, motoristas);
                     break;
                 }
                 case 2: {
-                    Motorista motoristaCadastrando = Motorista.cadastrarMotorista(sc);
+                    Motorista motoristaCadastrando = Motorista.cadastrar();
                     motoristas.add(motoristaCadastrando);
                     System.out.println(motoristaCadastrando.getNome() + " cadastrado com sucesso!");
                     break;
                 }
                 case 3: {
-                    Passageiro passageiroCadastrando = Passageiro.cadastrarPassageiro(sc);
+                    Passageiro passageiroCadastrando = Passageiro.cadastrar();
                     passageiros.add(passageiroCadastrando);
                     System.out.println(passageiroCadastrando.getNome() + " cadastrado com sucesso!");
                     break;

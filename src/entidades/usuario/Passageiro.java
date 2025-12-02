@@ -3,38 +3,50 @@ package entidades.usuario;
 import entidades.corrida.Corrida;
 import entidades.corrida.Local;
 import entidades.corrida.Rota;
-import entidades.pagamento.FormasDePagamento;
+import entidades.pagamento.CartaoCredito;
+import entidades.pagamento.CartaoDebito;
+import entidades.pagamento.FormaDePagamento;
+import entidades.pagamento.PIX;
 import exceptions.SaldoInsuficienteException;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import static main.Main.sc;
 
 public class Passageiro extends Usuario {
-    private ArrayList<FormasDePagamento> formasdepagamento = new ArrayList<>();
+    private ArrayList<FormaDePagamento> formasDePagamento = new ArrayList<>();
     private float saldo;
 
     public Passageiro(String nome, String email, String cpf, String numeroDeTelefone, String senha) {
         super(nome, email, cpf, numeroDeTelefone, senha);
     }
 
-    public void solicitarCorrida(Scanner sc) {
+    public void solicitarCorrida(ArrayList<Motorista> motoristas) {
         if (saldo < 0)
-            throw new SaldoInsuficienteException("Você tem pendências de débitos a serem pagos. Por favor, resolva-as antes de solicitar uma nova entidades.corrida.");
+            throw new SaldoInsuficienteException("Você tem pendências de débitos a serem pagos. Por favor, resolva-as antes de solicitar uma nova corrida.");
 
         System.out.println("Local de partida:");
-        Local partida = Local.inserirLocal(sc);
+        Local partida = Local.inserirLocal();
         System.out.println("Local de destino:");
-        Local destino = Local.inserirLocal(sc);
+        Local destino = Local.inserirLocal();
         System.out.println("Escolha a categoria da viagem: \n1: Luxo\n2: Comfort\n3: Comum\n4: Moto");
         TipoVeiculo tipoVeiculo = Veiculo.mapTipoVeiculo(sc.nextInt());
+        sc.nextLine();
 
         Rota rota = new Rota(partida, destino);
         Corrida corrida = new Corrida(rota, this, tipoVeiculo);
 
+        System.out.printf("Valor da corrida: R$ %.2f\n", corrida.getPreco());
         System.out.println("Deseja confirmar a viagem? (s|n):");
         String resposta = sc.nextLine();
 
-        if (!resposta.equalsIgnoreCase("s")) corrida.cancelar();
+        if (!resposta.equalsIgnoreCase("s")) {
+            corrida.cancelar();
+            System.out.println("Corrida cancelada!");
+        }
+
+        System.out.println("Buscando motorista...");
+        corrida.buscarMotorista(motoristas);
     }
 
     public float getSaldo() {
@@ -45,7 +57,7 @@ public class Passageiro extends Usuario {
         this.saldo = saldo;
     }
 
-    public static Passageiro cadastrarPassageiro(Scanner sc) {
+    public static Passageiro cadastrar() {
         System.out.println("---Cadastro---");
         System.out.println("Nome:");
         String nome = sc.nextLine();
