@@ -1,19 +1,18 @@
 package entidades.usuario;
 
-import entidades.pagamento.FormasDePagamento;
+import entidades.pagamento.FormaDePagamento;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public abstract class Usuario {
     private String nome;
     private String email;
-    private ArrayList<Integer> avaliacoes = new ArrayList<>();
+    private ArrayList<Integer> avaliacoes;
     private String cpf;
     private String numeroDeTelefone;
     private String senhaHash;
-    private ArrayList<FormasDePagamento> formasdepagamento = new ArrayList<>();
+    private ArrayList<FormaDePagamento> formasdepagamento = new ArrayList<>();
 
     private String hashSenha(String senha) {
         return senha + "1234Token@";
@@ -25,6 +24,10 @@ public abstract class Usuario {
         this.numeroDeTelefone = numeroDeTelefone;
         this.cpf = cpf;
         this.senhaHash = hashSenha(senha);
+        this.avaliacoes = new ArrayList<>();
+
+        // Média inicial será a máxima
+        avaliacoes.add(5);
     }
 
     public void avaliar(int nota) {
@@ -40,7 +43,15 @@ public abstract class Usuario {
         return soma /= avaliacoes.size();
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public boolean validateSenha(String senha) {
+        return this.senhaHash.equals(hashSenha(senha));
     }
 }

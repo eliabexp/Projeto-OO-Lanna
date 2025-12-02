@@ -1,6 +1,6 @@
 package entidades.usuario;
 
-import java.util.Scanner;
+import static main.Main.sc;
 
 public class Veiculo {
     private String placa;
@@ -27,7 +27,7 @@ public class Veiculo {
         };
     }
 
-    protected static Veiculo cadastrarVeiculo(Scanner sc) {
+    protected static Veiculo cadastrarVeiculo() {
         System.out.println("---Cadastro de veículo---");
         System.out.println("Placa:");
         String placa = sc.nextLine();
