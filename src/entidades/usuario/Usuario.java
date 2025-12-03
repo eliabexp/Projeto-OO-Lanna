@@ -12,7 +12,6 @@ public abstract class Usuario {
     private String numeroDeTelefone;
     private String senhaHash;
 
-
     private String hashSenha(String senha) {
         return senha + "1234Token@";
     }

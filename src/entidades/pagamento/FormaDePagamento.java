@@ -1,6 +1,6 @@
 package entidades.pagamento;
 
-import exceptions.PagamentoRecusadoException;
+import exceptions.SaldoInsuficienteException;
 
 public abstract class FormaDePagamento {
     private String nome;
@@ -13,7 +13,7 @@ public abstract class FormaDePagamento {
 
     public void processarPagamento(float valorCorrida) {
         if (saldo < valorCorrida) {
-            throw new PagamentoRecusadoException("Saldo insuficiente");
+            throw new SaldoInsuficienteException("Saldo insuficiente");
         }
 
         saldo -= valorCorrida;

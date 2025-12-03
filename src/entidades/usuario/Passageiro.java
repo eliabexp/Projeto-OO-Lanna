@@ -13,7 +13,7 @@ import static main.Main.sc;
 
 public class Passageiro extends Usuario {
     private float saldoDevedor;
-    private ArrayList<FormaDePagamento> formasDePagamento = new ArrayList<>();
+    private ArrayList<FormaDePagamento> formasDePagamento;
 
     public Passageiro() {
         System.out.println("| Viaje com a RoadLines |");
@@ -27,7 +27,6 @@ public class Passageiro extends Usuario {
         String numeroDeTelefone = sc.nextLine();
         System.out.println("Senha:");
         String senhaHash = sc.nextLine();
-
 
         this(nome, email, cpf, numeroDeTelefone, senhaHash, new ArrayList<>());
 
@@ -77,21 +76,25 @@ public class Passageiro extends Usuario {
         }
     }
 
-    private void listaMetodosDePagamento() {
+    private String listaMetodosDePagamento() {
+        String metodos = "";
+
         for (int i = 0; i < formasDePagamento.size(); i++) {
             if (formasDePagamento.get(i) instanceof CartaoCredito) {
-                System.out.println((i + 1) + " → Cartão de crédito: " + ((CartaoCredito) formasDePagamento.get(i)).getNome());
+                metodos += (i + 1) + " → Cartão de crédito: " + ((CartaoCredito) formasDePagamento.get(i)).getNome() + "\n";
             } else if (formasDePagamento.get(i) instanceof CartaoDebito) {
-                System.out.println((i + 1) + " → Cartão de débito: " + ((CartaoDebito) formasDePagamento.get(i)).getNome());
+                metodos += (i + 1) + " → Cartão de débito: " + ((CartaoDebito) formasDePagamento.get(i)).getNome() + "\n";
             } else if (formasDePagamento.get(i) instanceof PIX) {
-                System.out.println((i + 1) + " → PIX: " + ((PIX) formasDePagamento.get(i)).getNome());
+                metodos += (i + 1) + " → PIX: " + ((PIX) formasDePagamento.get(i)).getNome() + "\n";
             }
         }
+
+        return metodos;
     }
 
     public void cobrar(float valor) throws PagamentoRecusadoException {
         System.out.println("Escolha um método de pagamento: ");
-        listaMetodosDePagamento();
+        System.out.printf(listaMetodosDePagamento());
         int escolha = sc.nextInt();
         escolha--;
         sc.nextLine();
@@ -127,10 +130,6 @@ public class Passageiro extends Usuario {
 
     public ArrayList<FormaDePagamento> getFormasDePagamento() {
         return formasDePagamento;
-    }
-
-    public float getSaldoDevedor() {
-        return saldoDevedor;
     }
 
     public void setSaldoDevedor(float saldo) {
