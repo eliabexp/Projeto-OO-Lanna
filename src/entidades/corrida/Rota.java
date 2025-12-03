@@ -4,6 +4,15 @@ public class Rota {
     private Local partida;
     private Local destino;
 
+    public Rota() {
+        System.out.println("Local de partida:");
+        Local partida = new Local();
+        System.out.println("Local de destino:");
+        Local destino = new Local();
+
+        this(partida, destino);
+    }
+
     public Rota(Local partida, Local destino) {
         this.partida = partida;
         this.destino = destino;

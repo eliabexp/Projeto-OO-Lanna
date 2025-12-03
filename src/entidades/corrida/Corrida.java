@@ -4,6 +4,7 @@ import entidades.usuario.*;
 import exceptions.EstadoInvalidoDaCorridaException;
 import exceptions.NenhumMotoristaDisponivelException;
 import exceptions.PagamentoRecusadoException;
+import exceptions.SaldoInsuficienteException;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -25,15 +26,12 @@ public class Corrida {
     }
 
     public Corrida(Passageiro passageiro) {
-        System.out.println("Local de partida:");
-        Local partida = new Local();
-        System.out.println("Local de destino:");
-        Local destino = new Local();
+        Rota rota = new Rota();
+
         System.out.println("Escolha a categoria da viagem: \n1 → Luxo\n2 → Comfort\n3 → Comum\n4 → Moto");
         TipoVeiculo tipoVeiculo = Veiculo.mapTipoVeiculo(sc.nextInt());
         sc.nextLine();
 
-        Rota rota = new Rota(partida, destino);
         this(rota, passageiro, tipoVeiculo);
     }
 
@@ -43,10 +41,6 @@ public class Corrida {
         this.status = StatusCorrida.SOLICITADA;
         this.categoria = categoria;
         this.preco = calcularPreco();
-    }
-
-    protected Motorista getMotorista() {
-        return motorista;
     }
 
     public Rota getRota() {
@@ -61,11 +55,7 @@ public class Corrida {
         return passageiro;
     }
 
-    public StatusCorrida getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusCorrida status) {
+    private void setStatus(StatusCorrida status) {
         this.status = status;
     }
 
@@ -103,7 +93,7 @@ public class Corrida {
         motorista.setStatus(StatusMotorista.EM_CORRIDA);
 
         System.out.println();
-        System.out.println(motorista.getNome() + " aceitou sua corrida! A viagem foi iniciada.");
+        System.out.println(motorista.getNome() + " - " + motorista.getVeiculo().listaInfo() + " aceitou sua corrida! A viagem foi iniciada.");
 
         try {
             TimeUnit.SECONDS.sleep((long) rota.calcularDistancia());
@@ -144,7 +134,8 @@ public class Corrida {
 
         try {
             passageiro.cobrar(preco);
-        } catch (PagamentoRecusadoException e) {
+            System.out.println("Pagamento efetuado! Agradecemos pela preferência.");
+        } catch (PagamentoRecusadoException | SaldoInsuficienteException e) {
             System.out.println("Erro ao processar pagamento: " + e.getMessage());
             System.out.println("O valor da corrida será debitado na próxima viagem.");
             passageiro.setSaldoDevedor(preco);

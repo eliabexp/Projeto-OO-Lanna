@@ -93,7 +93,7 @@ public class Main {
                         "024.981.661-70",
                         "(61) 99110-0200",
                         "SenhaMestre",
-                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 1, "1234"), new CartaoCredito("Black", 5000, "1234")))
+                        new ArrayList<>(List.of(new CartaoDebito("Débito Visa", 5000, "1234"), new CartaoCredito("Black", 15000, "1234")))
                 )
         );
         passageiros.add(
