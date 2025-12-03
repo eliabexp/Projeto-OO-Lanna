@@ -49,6 +49,9 @@ public class Veiculo {
         };
     }
 
+    public String listaInfo() {
+        return modelo + " " + cor + " (" + placa + ")";
+    }
     public TipoVeiculo getTipoVeiculo() {
         return tipoVeiculo;
     }

@@ -7,7 +7,7 @@ public class PIX extends FormaDePagamento {
         super(nome, saldo);
     }
 
-    public PIX(){
+    public PIX() {
         System.out.println("Informe o nome da conta: ");
         String nome = sc.nextLine();
         System.out.println("Informe o saldo da conta: ");

@@ -27,14 +27,15 @@ public class Local {
         this.longitude = longitude;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public double getLatitude() {
         return latitude;
     }
+
     public double getLongitude() {
         return longitude;
-    }
-
-    public String getNome() {
-        return nome;
     }
 }
